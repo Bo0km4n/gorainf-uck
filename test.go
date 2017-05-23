@@ -8,5 +8,11 @@ import (
 func main() {
 	str := "hello"
 	fmt.Println(reflect.TypeOf(str))
-	fmt.Println(str[0])
+	for i := range str {
+		fmt.Println(string(str[i]))
+	}
+
+	var stdin string
+	fmt.Scan(&stdin)
+	fmt.Println(stdin)
 }
