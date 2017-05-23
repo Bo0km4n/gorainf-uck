@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"reflect"
 )
 
 func main() {
-	data, err := ioutil.ReadFile(`./sample.txt`)
+	data, err := ioutil.ReadFile(os.Args[1])
 	if err != nil {
 		fmt.Println("ファイルを読み込めませんでした")
 	}
