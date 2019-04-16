@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"reflect"
 )
 
 func main() {
+	if len(os.Args) != 2 {
+		fmt.Println("Not mached argument's length")
+	}
 	data, err := ioutil.ReadFile(os.Args[1])
 	if err != nil {
 		fmt.Println("ファイルを読み込めませんでした")
@@ -18,8 +20,6 @@ func main() {
 	program_counter := 0
 
 	tape := string(data)
-	fmt.Println("********************")
-	fmt.Println(reflect.TypeOf(tape[program_counter]))
 
 	for program_counter = 0; program_counter < len(tape); program_counter++ {
 
