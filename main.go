@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/k0kubun/pp"
 )
 
 func main() {
@@ -15,42 +17,39 @@ func main() {
 		fmt.Println("ファイルを読み込めませんでした")
 	}
 
+	interpret(string(data))
+}
+
+func interpret(tape string) {
 	memory := make([]uint8, 256)
 	pointer := 0
-	program_counter := 0
+	programCounter := 0
 
-	tape := string(data)
-
-	for program_counter = 0; program_counter < len(tape); program_counter++ {
+	for programCounter = 0; programCounter < len(tape); programCounter++ {
 
 		//test
-		//fmt.Println(string(tape[program_counter]))
+		//fmt.Println(string(tape[programCounter]))
 
-		switch tape[program_counter] {
+		switch tape[programCounter] {
 		case '>':
-			pointer += 1
+			pointer++
 		case '<':
-			pointer -= 1
+			pointer--
 		case '+':
-			memory[pointer] += 1
+			memory[pointer]++
 		case '-':
-			memory[pointer] -= 1
+			memory[pointer]--
 		case ',':
 			var stdin string
-			fmt.Print("Please input something : ")
-			fmt.Scan(stdin)
-			if len(stdin) != 1 {
-				fmt.Println("stdio err")
-				break
-			}
+			fmt.Scan(&stdin)
 			memory[pointer] = uint8(stdin[0])
 		case '.':
 			fmt.Print(string(memory[pointer]))
 		case '[':
 			if memory[pointer] == 0 {
 				for nest := 1; nest > 0; {
-					program_counter++
-					c := tape[program_counter]
+					programCounter++
+					c := tape[programCounter]
 					if c == '[' {
 						nest++
 					} else if c == ']' {
@@ -60,15 +59,19 @@ func main() {
 			}
 		case ']':
 			for nest := 1; nest > 0; {
-				program_counter -= 1
-				c := tape[program_counter]
+				programCounter--
+				c := tape[programCounter]
 				if c == '[' {
 					nest--
 				} else if c == ']' {
 					nest++
 				}
 			}
-			program_counter--
+			programCounter--
 		}
 	}
+}
+
+func dumpMemory(memory []uint8) {
+	pp.Println(memory)
 }
